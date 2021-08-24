@@ -66,7 +66,7 @@ public class Command {
      * @param cli 参数消息
      */
     protected MatchResult matchAction(String cli) {
-        onMatched.run(parseParams(cli));
+        if (onMatched != null) onMatched.run(parseParams(cli));
         return MatchResult.Success;
     }
 
@@ -128,7 +128,7 @@ public class Command {
     }
 
     /**
-     * 匹配结果
+     * 指令匹配结果
      */
     public enum MatchResult {
         /**
