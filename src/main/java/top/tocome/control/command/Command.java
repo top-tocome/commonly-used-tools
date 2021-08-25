@@ -17,45 +17,95 @@ public class Command {
      */
     public static String descPrefix = "#";
 
-    protected Command(String key, OnMatched onMatched) {
+    public Command(String key) {
         this.key = key;
-        this.onMatched = onMatched;
+    }
+
+    public Command(String key, String describe) {
+        this.key = key;
+        this.describe = describe;
+    }
+
+    public Command(String key, String describe, String... paramsHint) {
+        this.key = key;
+        this.describe = describe;
+        if (paramsHint.length > 0) this.paramsHint = paramsHint;
     }
 
     /**
      * 触发指令的关键词
      */
-    public String key;
-    /**
-     * 指令匹配成功后执行的动作
-     */
-    protected OnMatched onMatched;
-    /**
-     * 父级指令
-     */
-    protected CommandSet parentSet = null;
+    protected String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     /**
      * 指令参数提示 默认一个参数
      * <p> 例子：  new String["参数1","参数2","参数3",....]
      *
      * @see #showParams()
      */
-    protected String[] paramsHint = new String[]{""};
+    protected String[] paramsHint = new String[]{"<no paramHint>"};
+
+    public void setParamsHint(String[] paramsHint) {
+        this.paramsHint = paramsHint;
+    }
+
     /**
      * 指令描述
      */
-    public String describe = "no describe";
+    protected String describe = "no describe";
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
 
     /**
-     * 匹配指令
+     * 指令匹配成功后执行的动作
+     */
+    protected OnMatchedEvent onMatchedEvent = null;
+
+    public void setOnMatchedEvent(OnMatchedEvent onMatchedEvent) {
+        this.onMatchedEvent = onMatchedEvent;
+    }
+
+    /**
+     * 父级指令
+     */
+    protected CommandSet parentSet = null;
+
+    public void setParentSet(CommandSet parentSet) {
+        this.parentSet = parentSet;
+    }
+
+    /**
+     * 从最高级父指令开始匹配
+     */
+    public MatchResult matchFromTopParent(String cli) {
+        if (parentSet != null) return parentSet.matchFromTopParent(cli);
+        return match(cli);
+    }
+
+    /**
+     * 从本级指令开始匹配
      *
      * @param cli 指令消息
      * @return 匹配结果
      */
     public MatchResult match(String cli) {
-        cli = cli.trim();
-        if (cli.startsWith(key)) {
-            return matchAction(cli.replaceFirst(key, "").trim());
+        //pattern sample : " *(-|)key([- ].*|)"
+        if (cli.matches(" *(|" + defaultPrefix + ")" + key + "([" + defaultPrefix + " ].*|)")) {
+            return matchAction(cli.replaceFirst(" *(|" + defaultPrefix + ")" + key, ""));
         }
         return MatchResult.Failed;
     }
@@ -66,7 +116,7 @@ public class Command {
      * @param cli 参数消息
      */
     protected MatchResult matchAction(String cli) {
-        if (onMatched != null) onMatched.run(parseParams(cli));
+        if (onMatchedEvent != null) onMatchedEvent.run(parseParams(cli));
         return MatchResult.Success;
     }
 
@@ -120,7 +170,7 @@ public class Command {
     /**
      * 指令行为接口
      */
-    public interface OnMatched {
+    public interface OnMatchedEvent {
         /**
          * @param params 指令参数数组，最大长度为{@link #paramsHint}的长度，最小长度为 1
          */
