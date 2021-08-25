@@ -33,7 +33,19 @@ public class Permission {
         /**
          * 最高权限级别
          */
-        public static final Level Admin = new Level("Admin", 0);
+        public static final Level Root = new Level("Root", 0);
+        /**
+         * 管理员权限
+         */
+        public static final Level Admin = new Level("Admin", 100);
+        /**
+         * 用户权限
+         */
+        public static final Level User = new Level("User", 200);
+        /**
+         * 访客
+         */
+        public static final Level Visitor = new Level("Visitor", 300);
         /**
          * 加入黑名单
          */
@@ -71,6 +83,34 @@ public class Permission {
         public boolean compareWith(Level level) {
             return getValue() <= level.getValue();
         }
+
+        /**
+         * 判断权限级别是否相同
+         */
+        public boolean equals(Level level) {
+            return getValue() == level.getValue();
+        }
     }
 
+    /**
+     * 权限对比结果
+     */
+    public enum CheckResult {
+        /**
+         * 有权限
+         */
+        Success,
+        /**
+         * 权限不足
+         */
+        LowerLevel,
+        /**
+         * 无权限
+         */
+        NoPermission,
+        /**
+         * 已被加入黑名单
+         */
+        Black
+    }
 }
