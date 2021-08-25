@@ -7,8 +7,8 @@ import java.util.ArrayList;
  */
 public class CommandSet extends Command {
 
-    protected CommandSet(String key, OnMatched onMatched) {
-        super(key, onMatched);
+    public CommandSet(String key) {
+        super(key);
     }
 
     /**
@@ -18,8 +18,7 @@ public class CommandSet extends Command {
 
     @Override
     protected MatchResult matchAction(String cli) {
-        if (cli.startsWith(defaultPrefix)) {
-            cli = cli.replaceFirst(defaultPrefix, "").trim();
+        if (cli.startsWith(Prefix)) {
             MatchResult result;
             for (Command c : commands) {
                 result = c.match(cli);
@@ -36,7 +35,7 @@ public class CommandSet extends Command {
      * 添加一条子命令
      */
     public void addCommand(Command command) {
-        command.parentSet = this;
+        command.setParentSet(this);
         commands.add(command);
     }
 }

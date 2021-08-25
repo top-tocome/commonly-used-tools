@@ -51,7 +51,7 @@ public class Command {
      *
      * @see #showParams()
      */
-    protected String[] paramsHint = new String[]{"<no paramHint>"};
+    protected String[] paramsHint = new String[]{"<no params>"};
 
     public void setParamsHint(String[] paramsHint) {
         this.paramsHint = paramsHint;

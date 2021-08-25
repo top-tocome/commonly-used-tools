@@ -13,6 +13,12 @@ public class Permission {
      */
     private final Level level;
 
+    /**
+     * 注册一个权限凭证
+     *
+     * @param id    用户唯一id
+     * @param level 权限级别
+     */
     public Permission(long id, Level level) {
         this.id = id;
         this.level = level;
@@ -61,6 +67,12 @@ public class Permission {
          */
         private final int value;
 
+        /**
+         * 创建一个新的权限级别，建议设为常量
+         *
+         * @param name
+         * @param value {@link #value}
+         */
         public Level(String name, int value) {
             this.name = name;
             this.value = Math.max(value, 0);
