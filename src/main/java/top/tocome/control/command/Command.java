@@ -7,15 +7,15 @@ public class Command {
     /**
      * 副指令默认前缀
      */
-    public static String defaultPrefix = "-";
+    public static String Prefix = "-";
     /**
      * 参数分割符号
      */
-    public static String paramRegex = " ";
+    public static String ParamRegex = " ";
     /**
      * 描述开始符号
      */
-    public static String descPrefix = "#";
+    public static String DescPrefix = "#";
 
     public Command(String key) {
         this.key = key;
@@ -103,9 +103,10 @@ public class Command {
      * @return 匹配结果
      */
     public MatchResult match(String cli) {
-        //pattern sample : " *(-|)key([- ].*|)"
-        if (cli.matches(" *(|" + defaultPrefix + ")" + key + "([" + defaultPrefix + " ].*|)")) {
-            return matchAction(cli.replaceFirst(" *(|" + defaultPrefix + ")" + key, ""));
+        //pattern sample : "^ *(?:|-)key(?:[- ].*|)"
+        String commandPreRegex = "^ *(?:|" + Prefix + ")" + key;
+        if (cli.matches(commandPreRegex + "(?:[" + Prefix + " ].*|)")) {
+            return matchAction(cli.replaceFirst(commandPreRegex + " *", ""));
         }
         return MatchResult.Failed;
     }
@@ -127,11 +128,7 @@ public class Command {
      * @return 参数数组
      */
     protected String[] parseParams(String cli) {
-        String[] params = cli.split(paramRegex);
-        for (int i = 0; i < params.length; i++) {
-            params[i] = params[i].trim();
-        }
-        return params;
+        return cli.split(" *" + ParamRegex + " *");
     }
 
     /**
@@ -140,7 +137,7 @@ public class Command {
      * @return key -subKey1 -subKey2 ... param1 param2 ... #describe + "\n"
      */
     protected String getHelp() {
-        return getTotalKey() + showParams() + descPrefix + describe + "\n";
+        return getTotalKey() + showParams() + DescPrefix + describe + "\n";
     }
 
     /**
@@ -152,19 +149,19 @@ public class Command {
         if (parentSet == null) {
             return key;
         }
-        return parentSet.getTotalKey() + defaultPrefix + key;
+        return parentSet.getTotalKey() + Prefix + key;
     }
 
     /**
      * 参数展示
      *
-     * @return paramsHint[0]+{@value paramRegex}+paramsHint[1]+...+paramsHint[n]
+     * @return paramsHint[0]+{@value ParamRegex}+paramsHint[1]+...+paramsHint[n]
      */
     protected String showParams() {
         StringBuilder sb = new StringBuilder();
         for (String param : paramsHint)
-            sb.append(paramRegex).append(param).append("  ");
-        return sb.toString().replaceFirst(paramRegex, "  ");
+            sb.append(ParamRegex).append(param).append("  ");
+        return sb.toString().replaceFirst(ParamRegex, "  ");
     }
 
     /**
