@@ -7,6 +7,10 @@ public class CommandBuilder {
 
     private final Command command;
 
+    public CommandBuilder(Command command) {
+        this.command = command;
+    }
+
     public CommandBuilder(String key) {
         command = new Command(key);
     }

@@ -18,18 +18,17 @@ public class Command {
     public static String DescPrefix = "#";
 
     public Command(String key) {
-        this.key = key;
+        setKey(key);
     }
 
     public Command(String key, String describe) {
-        this.key = key;
-        this.describe = describe;
+        this(key);
+        setDescribe(describe);
     }
 
     public Command(String key, String describe, String... paramsHint) {
-        this.key = key;
-        this.describe = describe;
-        if (paramsHint.length > 0) this.paramsHint = paramsHint;
+        this(key, describe);
+        setParamsHint(paramsHint);
     }
 
     /**
@@ -54,7 +53,7 @@ public class Command {
     protected String[] paramsHint = new String[]{"<no params>"};
 
     public void setParamsHint(String[] paramsHint) {
-        this.paramsHint = paramsHint;
+        if (paramsHint != null && paramsHint.length > 0) this.paramsHint = paramsHint;
     }
 
     /**
@@ -84,8 +83,16 @@ public class Command {
      */
     protected CommandSet parentSet = null;
 
+    /**
+     * 添加父级指令
+     * 等同与{@link CommandSet#addCommand(Command this)}
+     *
+     * @param parentSet 父指令集
+     */
     public void setParentSet(CommandSet parentSet) {
+        if (this.parentSet != null) this.parentSet.commands.remove(this);
         this.parentSet = parentSet;
+        parentSet.commands.add(this);
     }
 
     /**
@@ -136,7 +143,7 @@ public class Command {
      *
      * @return key -subKey1 -subKey2 ... param1 param2 ... #describe + "\n"
      */
-    protected String getHelp() {
+    public String getUsage() {
         return getTotalKey() + showParams() + DescPrefix + describe + "\n";
     }
 
