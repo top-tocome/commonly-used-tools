@@ -16,8 +16,8 @@ public class Permission {
     /**
      * 注册一个权限凭证
      *
-     * @param id    用户唯一id
-     * @param level 权限级别
+     * @param id    {@link #id}
+     * @param level {@link #level}
      */
     public Permission(long id, Level level) {
         this.id = id;
@@ -70,7 +70,7 @@ public class Permission {
         /**
          * 创建一个新的权限级别，建议设为常量
          *
-         * @param name
+         * @param name  {@link #name}
          * @param value {@link #value}
          */
         public Level(String name, int value) {
