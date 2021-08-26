@@ -27,7 +27,7 @@ public class CommandSetBuilder {
      * 添加一条副指令
      */
     public CommandSetBuilder newCommand(String key, Command.OnMatchedEvent onMatchedEvent) {
-        new CommandBuilder(key).onMatchedEvent(onMatchedEvent).parentSet(commandSet);
+        new CommandBuilder(key).onMatchedEvent(onMatchedEvent).build().setParentSet(commandSet);
         return this;
     }
 
@@ -37,7 +37,7 @@ public class CommandSetBuilder {
     public CommandSetBuilder newCommand(String key, String describe, Command.OnMatchedEvent onMatchedEvent) {
         new CommandBuilder(key, describe)
                 .onMatchedEvent(onMatchedEvent)
-                .parentSet(commandSet);
+                .build().setParentSet(commandSet);
         return this;
     }
 
@@ -47,7 +47,47 @@ public class CommandSetBuilder {
     public CommandSetBuilder newCommand(String key, String[] paramsHint, String describe, Command.OnMatchedEvent onMatchedEvent) {
         new CommandBuilder(key, describe, paramsHint)
                 .onMatchedEvent(onMatchedEvent)
-                .parentSet(commandSet);
+                .build().setParentSet(commandSet);
+        return this;
+    }
+
+    /**
+     * 设置参数提示
+     *
+     * @see CommandSet#paramsHint
+     */
+    public CommandSetBuilder paramsHint(String... paramsHint) {
+        commandSet.setParamsHint(paramsHint);
+        return this;
+    }
+
+    /**
+     * 设置指令描述
+     *
+     * @see CommandSet#describe
+     */
+    public CommandSetBuilder describe(String describe) {
+        commandSet.setDescribe(describe);
+        return this;
+    }
+
+    /**
+     * 设置父级指令
+     *
+     * @see CommandSet#parentSet
+     */
+    public CommandSetBuilder parentSet(CommandSet parentSet) {
+        commandSet.setParentSet(parentSet);
+        return this;
+    }
+
+    /**
+     * 设置匹配事件
+     *
+     * @see CommandSet#onMatchedEvent
+     */
+    public CommandSetBuilder onMatchedEvent(Command.OnMatchedEvent onMatchedEvent) {
+        commandSet.setOnMatchedEvent(onMatchedEvent);
         return this;
     }
 
