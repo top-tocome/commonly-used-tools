@@ -5,22 +5,22 @@ import java.util.ArrayList;
 /**
  * 权限管理
  */
-public class PermissionManager {
+public class PermissionSystem {
     /**
      * 全局的权限管理
      */
-    public static final PermissionManager Global = new PermissionManager();
+    public static final PermissionSystem Global = new PermissionSystem();
 
-    private PermissionManager() {
-        this.name = "GlobalPermissionManager";
+    private PermissionSystem() {
+        this.name = "GlobalPermissionSystem";
     }
 
-    public PermissionManager(String name) {
+    public PermissionSystem(String name) {
         this.name = name;
         parent = Global;
     }
 
-    public PermissionManager(String name, PermissionManager parent) {
+    public PermissionSystem(String name, PermissionSystem parent) {
         this.name = name;
         this.parent = parent == null ? Global : parent;
     }
@@ -37,7 +37,7 @@ public class PermissionManager {
     /**
      * 父级权限域,用户权限继承父级
      */
-    private PermissionManager parent = null;
+    private PermissionSystem parent = null;
 
     /**
      * 储存所有用户的权限凭证
