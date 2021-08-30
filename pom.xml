@@ -6,8 +6,8 @@
 
     <groupId>top.tocome</groupId>
     <artifactId>commonly-used-tools</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1</version>
-    <url>https://github.com/top-tocome/commonly-used-tools</url>
 
     <properties>
         <javadoc.skip>false</javadoc.skip>
