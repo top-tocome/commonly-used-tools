@@ -124,8 +124,9 @@ public class Command {
      * @param cli 参数消息
      */
     protected MatchResult matchAction(String cli) {
-        if (onMatchedEvent != null) onMatchedEvent.run(parseParams(cli));
-        return MatchResult.Success;
+        if (onMatchedEvent != null)
+            return onMatchedEvent.run(parseParams(cli));
+        return MatchResult.NoEvent;
     }
 
     /**
@@ -178,7 +179,7 @@ public class Command {
         /**
          * @param params 指令参数数组，最大长度为{@link #paramsHint}的长度，最小长度为 1
          */
-        void run(String[] params);
+        MatchResult run(String[] params);
     }
 
     /**
@@ -188,14 +189,35 @@ public class Command {
         /**
          * 指令匹配且执行成功
          */
-        Success,
+        Success("执行成功"),
         /**
          * 主指令匹配成功，但副指令匹配失败
          */
-        SubFailed,
+        SubFailed("指令错误"),
+        /**
+         * 匹配成功，但未设置事件，运行失败
+         */
+        NoEvent("该指令未绑定事件"),
+        /**
+         * 事件执行失败
+         */
+        RunFailed("指令执行失败"),
+        /**
+         * 执行时参数出错
+         */
+        ParamError("参数错误"),
         /**
          * 主指令匹配失败
          */
-        Failed
+        Failed("没有该指令");
+
+        /**
+         * 错误提示
+         */
+        public String errorHint;
+
+        MatchResult(String errorHint) {
+            this.errorHint = errorHint;
+        }
     }
 }
