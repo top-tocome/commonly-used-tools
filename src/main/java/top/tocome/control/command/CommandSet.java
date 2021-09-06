@@ -1,5 +1,7 @@
 package top.tocome.control.command;
 
+import top.tocome.utils.Error;
+
 import java.util.ArrayList;
 
 /**
@@ -25,13 +27,13 @@ public class CommandSet extends Command {
     protected final ArrayList<Command> commands = new ArrayList<>();
 
     @Override
-    protected MatchResult matchAction(String cli) {
+    protected Error matchAction(String cli) {
         if (cli.startsWith(Prefix)) {
-            MatchResult result;
+            Error e;
             for (Command c : commands) {
-                result = c.match(cli);
-                if (result != MatchResult.Failed)
-                    return result;
+                e = c.match(cli);
+                if (e != MatchResult.Failed)
+                    return e;
             }
             return MatchResult.SubFailed;
         } else {

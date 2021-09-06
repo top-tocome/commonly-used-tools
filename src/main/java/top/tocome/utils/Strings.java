@@ -15,14 +15,28 @@ public class Strings {
     }
 
     /**
-     * 将字符串转换为int
-     * 出现错误返回 -1
+     * 将字符串转换为long
+     *
+     * @param defaultLong 出现错误时返回
      */
-    public static int parseInt(String s) {
+    public static long parseLong(String s, int defaultLong) {
+        try {
+            return Long.parseLong(s);
+        } catch (Exception e) {
+            return defaultLong;
+        }
+    }
+
+    /**
+     * 将字符串转换为int
+     *
+     * @param defaultInt 出现错误时返回
+     */
+    public static int parseInt(String s, int defaultInt) {
         try {
             return Integer.parseInt(s);
         } catch (Exception e) {
-            return -1;
+            return defaultInt;
         }
     }
 

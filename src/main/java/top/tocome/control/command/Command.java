@@ -1,5 +1,7 @@
 package top.tocome.control.command;
 
+import top.tocome.utils.Error;
+
 /**
  * 单条指令
  */
@@ -98,7 +100,7 @@ public class Command {
     /**
      * 从最高级父指令开始匹配
      */
-    public MatchResult matchFromTopParent(String cli) {
+    public Error matchFromTopParent(String cli) {
         if (parentSet != null) return parentSet.matchFromTopParent(cli);
         return match(cli);
     }
@@ -109,7 +111,7 @@ public class Command {
      * @param cli 指令消息
      * @return 匹配结果
      */
-    public MatchResult match(String cli) {
+    public Error match(String cli) {
         //pattern sample : "^ *(?:|-)key(?:[- ].*|)"
         String commandPreRegex = "^ *(?:|" + Prefix + ")" + key;
         if (cli.matches(commandPreRegex + "(?:[" + Prefix + " ].*|)")) {
@@ -123,7 +125,7 @@ public class Command {
      *
      * @param cli 参数消息
      */
-    protected MatchResult matchAction(String cli) {
+    protected Error matchAction(String cli) {
         if (onMatchedEvent != null)
             return onMatchedEvent.run(parseParams(cli));
         return MatchResult.NoEvent;
@@ -179,45 +181,36 @@ public class Command {
         /**
          * @param params 指令参数数组，最大长度为{@link #paramsHint}的长度，最小长度为 1
          */
-        MatchResult run(String[] params);
+        Error run(String[] params);
     }
 
     /**
      * 指令匹配结果
      */
-    public enum MatchResult {
+    public static class MatchResult {
         /**
          * 指令匹配且执行成功
          */
-        Success("执行成功"),
+        public static Error Success = new Error("执行成功");
+
         /**
          * 主指令匹配成功，但副指令匹配失败
          */
-        SubFailed("指令错误"),
+        public static Error SubFailed = new Error("没有该指令");
+
         /**
          * 匹配成功，但未设置事件，运行失败
          */
-        NoEvent("该指令未绑定事件"),
-        /**
-         * 事件执行失败
-         */
-        RunFailed("指令执行失败"),
+        public static Error NoEvent = new Error("该指令未绑定事件");
+
         /**
          * 执行时参数出错
          */
-        ParamError("参数错误"),
+        public static Error ParamError = new Error("参数错误");
+
         /**
          * 主指令匹配失败
          */
-        Failed("没有该指令");
-
-        /**
-         * 错误提示
-         */
-        public String errorHint;
-
-        MatchResult(String errorHint) {
-            this.errorHint = errorHint;
-        }
+        public static Error Failed = new Error("指令错误");
     }
 }
