@@ -6,10 +6,26 @@
 
     <groupId>top.tocome</groupId>
     <artifactId>commonly-used-tools</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <packaging>jar</packaging>
+    <name>commonly-used-tools</name>
+    <description>Commonly used tools for command,data,io and so on</description>
+    <url>https://github.com/top-tocome/commonly-used-tools</url>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/top-tocome/commonly-used-tools</url>
+        <connection>scm:https://github.com/top-tocome/commonly-used-tools.git</connection>
+    </scm>
 
     <properties>
-        <javadoc.skip>false</javadoc.skip>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
