@@ -3,7 +3,12 @@ package top.tocome.io;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-public class File {
+public class File extends java.io.File {
+
+    public File(String path) {
+        super(path);
+    }
+
     /**
      * 读取文件
      *
@@ -20,14 +25,14 @@ public class File {
     }
 
     /**
-     * 写入文件
+     * 已分离为 {@link #write(String, byte[])}和{@link #append(String, byte[])}}
      *
      * @param filePath 源文件路径
      * @param contents 写入的内容
      * @param append   添加或覆盖
      * @return 执行结果
      */
-
+    @Deprecated
     public static boolean write(String filePath, byte[] contents, boolean append) {
         try {
             return Stream.write(new FileOutputStream(filePath, append), contents);
@@ -35,6 +40,20 @@ public class File {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * @see #write(String, byte[], boolean)
+     */
+    public static boolean write(String filePath, byte[] contents) {
+        return write(filePath, contents, false);
+    }
+
+    /**
+     * @see #write(String, byte[], boolean)
+     */
+    public static boolean append(String filePath, byte[] contents) {
+        return write(filePath, contents, true);
     }
 
     /**
