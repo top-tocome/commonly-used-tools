@@ -1,4 +1,8 @@
 package top.tocome.data;
 
-public class Data {
+public interface Data {
+
+    void deserialize();
+
+    String serialize();
 }
